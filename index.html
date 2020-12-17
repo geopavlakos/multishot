@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+                               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <title>Multishot</title>
+    </head>
+    <body class="container" style="max-width:920px">
+        <!-- Title -->
+        <div>
+            <div class='row mt-5 mb-5'>
+                <div class='col text-center'>
+                    <p class="h3 font-weight-normal">Human Mesh Recovery from Multiple Shots</p>
+                </div>
+            </div>
+
+
+            <!-- authors -->
+            <div class='col text-center h5 font-weight-bold mb-3'>
+            <a class="col-md-3 col-xs-7" href="https://geopavlakos.github.io/"><span>Georgios Pavlakos</span></a>
+            <a class="col-md-3 col-xs-7" href="http://people.eecs.berkeley.edu/~malik/"><span>Jitendra Malik</span></a>
+            <a class="col-md-3 col-xs-7" href="http://people.eecs.berkeley.edu/~kanazawa/"><span>Angjoo Kanazawa</span></a>
+            </div>
+
+            <!-- affiliations -->
+            <div class='col text-center mt-1 mb-1' >
+            <a class="col-md-6" href="http://www.berkeley.edu/"><span>University of California, Berkeley</span></a>
+            </div>
+
+
+        </br>
+
+        <div class='row text-center'>
+                <div>
+                    <video width=100% src="files/teaser_movie.m4v", type="video/m4v" autoplay muted loop/>
+                </div>
+                <div class='row'>
+                    <p class="text-left">
+                Videos from edited media like movies are a useful, yet under-explored source of information. The rich variety of appearance and interactions between humans depicted over a large temporal context in these films could be a valuable source of data. However, the richness of data comes at the expense of fundamental challenges such as abrupt shot changes and close up shots of actors with heavy truncation, which limits the applicability of existing human 3D understanding methods. In this paper, we address these limitations with an insight that while shot changes of the same scene incur a discontinuity between frames, the 3D structure of the scene still changes smoothly. This allows us to handle frames before and after the shot change as multi-view signal that provide strong cues to recover the 3D state of the actors. We propose a multi-shot optimization framework, which leads to improved 3D reconstruction and mining of long sequences with pseudo ground truth 3D human mesh. We show that the resulting data is beneficial in the training of various human mesh recovery models: for single image, we achieve improved robustness;  for video we propose a pure transformer-based temporal encoder, which can naturally handle missing observations due to shot changes in the input frames. We demonstrate the importance of the insight and proposed models through extensive experiments. The tools we develop open the door to processing and analyzing in 3D content from a large library of edited media, which could be helpful for many downstream applications.
+                </div>
+        </div>
+        </div>
+
+        <!-- Paper section -->
+        <div>
+            <hr>
+            <div class='row'>
+                <div class='col-md-3 col-sm-3 col-xs-12 text-center col-sm-3'>
+                    <div class="row mt-4">
+                        <a href="files/main.pdf" style="max-width:200px; margin-left:auto; margin-right:auto">
+                            <img src="files/paper.png" alt="paper-snapshot" class="img-thumbnail" width="80%" style="box-shadow: 10px 10px 5px grey;">
+                        </a>
+                    </div>
+                    </div>
+                    <div class='col-md-9 col-sm-9 col-xs-12 '>
+                      <p class='h2'>Paper</p>
+                      <p class='h5 font-weight-bold '> Human Mesh Recovery from Multiple Shots</p>
+                      <p class='h5'> Georgios Pavlakos, Jitendra Malik, Angjoo Kanazawa</p>
+                      <a class="h5" href="https://arxiv.org/pdf/2006.08586.pdf" style="margin-right:10px">
+                        <span>[pdf]</span>
+                      </a>
+                      <a class="h5" href="files/pavlakos2020multishot.bib" target="_blank">
+                        <span>[bibtex]</span>
+                      </a>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <hr>
+
+            <div class='row text-center'>
+                <div class='col'>
+                    <p class='h2 mr-3'>Video</p>
+                </div>
+            </div>
+
+
+            <div class='row mt-3 text-center center-block' style=" margin-left:auto; margin-right:auto; max-width:560px">
+                <div class='col ml-1 mr-1' style="position: relative; width: 100%;height: 0;padding-bottom: 56%;">
+            <iframe width="558" height="314" src="https://www.youtube.com/embed/EC181I4ejbY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </iframe>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Results, transformation -->
+        <div>
+            <hr>
+            <div class='row text-center'>
+                <div class='col'>
+                    <p class='h2'>Overview</p>
+                    <p class="text-left">
+            We propose a multi-shot optimization method that allows us to reconstruct humans across shot changes. We apply this optimization step offline to build a large dataset of pseudo ground truth 3D human sequences from movies. Then, we use the collected data, to train computational models that can directly recover the human mesh from a single image, or from a video sequence that can include shot changes.
+                </div>
+            </div>
+            <div class='row'>
+                <div>
+                    <img width=100% src="files/overview.png"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture, explaination -->
+        <div>
+            <hr>
+            <div class='row text-center'>
+                <div class='col'>
+                    <p class='h2'>Samples from Multi-Shot AVA</p>
+                </div>
+
+            <div class='row mt-3'>
+            <div class='col-md-6 col-sm-6 col-xs-12 align-middle mt-4'>
+                <video width=100% src="files/msava1.mp4", type="video/m4v" autoplay muted loop/>
+            </div>
+            <div class='col-md-6 col-sm-6 col-xs-12 align-middle mt-4'>
+                <video width=100% src="files/msava2.mp4", type="video/m4v" autoplay muted loop/>
+            </div>
+            </div>
+
+            <div class='row mt-3'>
+            <div class='col-md-6 col-sm-6 col-xs-12 align-middle mt-4'>
+                <video width=100% src="files/msava3.mp4", type="video/m4v" autoplay muted loop/>
+            </div>
+            <div class='col-md-6 col-sm-6 col-xs-12 align-middle mt-4'>
+                <video width=100% src="files/msava4.mp4", type="video/m4v" autoplay muted loop/>
+            </div>
+            </div>
+
+            </div>
+
+        <!--
+            <div class='row text-left'>
+                <div class='col'>
+            <p class='h5'><em> Architecture </em></p>
+            </div>
+        </div>
+        -->
+
+
+
+        </div>
+
+
+        <!-- Architecture, explaination -->
+        <div>
+            <hr>
+            <div class='row text-center'>
+                <div class='col'>
+                    <p class='h2'>Comparison</p>
+                    <p class="text-left">
+                Many previous approaches for 3D human reconstruction were designed primarily with performance capture in mind, so they can often fail on data from edited media. Our methods are robust and successful in these scenarios as well.
+                </div>
+                <div class='row'>
+                <div>
+                    <video width=100% src="files/comparison_video.m4v", type="video/m4v" autoplay muted loop/>
+                </div>
+                <div class='row'>
+                <div>
+                    <img width=90% src="files/comparison_image.png"/>
+                </div>
+            </div>
+            </div>
+            </div>
+
+
+        </div>
+
+
+        <!-- Ack -->
+        <div>
+            <hr>
+
+            <div class='row mb-5 text-center'>
+                <div class='col'>
+                    <p class='h2'>Acknowledgements</p>
+            <div class='text-left'>
+            <p>This research was supported by BAIR sponsors.</p>
+            <p>We want to thank Stephen Phillips for the video voiceover. GP wants to thank Nikos Kolotouros for helpful discussions.</p>
+            <p>The design of this project page was based on <a href="https://www.guandaoyang.com/PointFlow/">this</a> website.
+            </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
