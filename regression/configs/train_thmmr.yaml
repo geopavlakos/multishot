@@ -1,26 +1,26 @@
-PROJECT: SMPL
+PROJECT: SMPLTemp
 DATASETS:
     TRAIN:
         H36M:
             DATASET_FILE: mshot_data/regression_data/extras/h36m_train.npz
             IMG_DIR: mshot_data/datasets/h36m/images
             TRAIN: True
-            WEIGHT: 0.4
+            WEIGHT: 0.25
         COCO:
             DATASET_FILE: mshot_data/regression_data/extras/coco_2017_train_spin.npz
             IMG_DIR: mshot_data/datasets/coco
             TRAIN: True
-            WEIGHT: 0.15
+            WEIGHT: 0.05
         MPII:
             DATASET_FILE: mshot_data/regression_data/extras/mpii_train_spin.npz
             IMG_DIR: mshot_data/datasets/mpii_human_pose_v1_u12_2/images
             TRAIN: TRUE
-            WEIGHT: 0.15
+            WEIGHT: 0.05
         AVA:
-            DATASET_FILE: mshot_data/regression_data/extras/ava_multi_shot_hmr.npz
+            DATASET_FILE: mshot_data/regression_data/extras/ava_multi_shot_thmmr.npz
             IMG_DIR: mshot_data/datasets/ava/train/midframes
-            TRAIN: TRUE
-            WEIGHT: 0.3
+            TRAIN: True
+            WEIGHT: 0.65
 SMPL:
   MODEL_PATH: mshot_data/models/smpl
   GENDER: neutral
@@ -29,15 +29,15 @@ SMPL:
   JOINT_REGRESSOR_EXTRA: mshot_data/regression_data/SMPL_to_J19.pkl
 GENERAL:
   SUMMARY_STEPS: 100
-  CHECKPOINT_STEPS: 10000
+  CHECKPOINT_STEPS: 1000
   NUM_WORKERS: 12
   USE_CUDA: TRUE
 
 TRAIN:
   LR: 1e-4
   WEIGHT_DECAY: 1e-4
-  BATCH_SIZE: 64
-  EXTREME_CROPPING: TRUE
+  BATCH_SIZE: 128
+  EXTREME_CROPPING: FALSE
 LOSS_WEIGHTS:
     KEYPOINTS_2D: 1
     KEYPOINTS_3D: 1
@@ -45,11 +45,14 @@ LOSS_WEIGHTS:
     BODY_POSE: 0.1
     BETAS: 0.05
     BETA_REG: 0.005
+    SMOOTH_KEYPOINTS_3D: 0.0166
+    SMOOTH_BODY_POSE: 0.05
 MODEL:
+  PRETRAINED_CHECKPOINT: mshot_data/regression_data/hmr_ava.pt
   IMAGE_SIZE: 256
   SMPL_HEAD:
       TYPE: basic
-      POOL: max
+      POOL: pooled
       SMPL_MEAN_PARAMS: mshot_data/regression_data/smpl_mean_params.npz
       IN_CHANNELS: 2048
   BACKBONE:

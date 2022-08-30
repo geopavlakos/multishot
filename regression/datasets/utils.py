@@ -283,8 +283,11 @@ def get_example(img_path, center_x, center_y, width, height,
                 patch_width, patch_height,
                 mean, std, do_augment, excrop):
     # 1. load image
-    cvimg = cv2.imread(
-        img_path, cv2.IMREAD_COLOR | cv2.IMREAD_IGNORE_ORIENTATION)
+    if img_path == '':
+        cvimg = np.zeros([256, 256, 3])
+    else:
+        cvimg = cv2.imread(
+            img_path, cv2.IMREAD_COLOR | cv2.IMREAD_IGNORE_ORIENTATION)
 
     if not isinstance(cvimg, np.ndarray):
         raise IOError("Fail to read %s" % img_path)
@@ -335,3 +338,35 @@ def get_example(img_path, center_x, center_y, width, height,
     keypoints_2d[:, :-1] = keypoints_2d[:, :-1] / patch_width - 0.5
 
     return img_patch, keypoints_2d, keypoints_3d, smpl_params, has_smpl_params
+
+def get_example_noimg(center_x, center_y, width, height,
+                      keypoints_2d, keypoints_3d,
+                      smpl_params, has_smpl_params,
+                      flip_kp_permutation,
+                      patch_width, patch_height,
+                      mean, std, do_augment=False, excrop=False):
+
+    # get augmentation params
+    if do_augment:
+        scale, rot, do_flip, color_scale, tx, ty = do_augmentation()
+        if excrop and torch.rand(1).item() > 0.9:
+            center_x, center_y, width, height = extreme_cropping(center_x, center_y, width, height, keypoints_2d)
+    else:
+        scale, rot, do_flip, color_scale, tx, ty = 1.0, 0, False, [1.0, 1.0, 1.0], 0., 0.
+
+    center_x += width * tx
+    center_y += height * ty
+
+    # Process 3D keypoints
+    keypoints_3d = keypoint_3d_processing(keypoints_3d, flip_kp_permutation, rot, do_flip)
+
+    # generate image patch
+    trans, trans_inv = gen_trans_from_patch_cv(center_x, center_y, width, height, patch_width, patch_height, scale, rot, inv=False)
+
+    smpl_params, has_smpl_params = smpl_param_processing(smpl_params, has_smpl_params, rot, do_flip)
+
+    for n_jt in range(len(keypoints_2d)):
+        keypoints_2d[n_jt, 0:2] = trans_point2d(keypoints_2d[n_jt, 0:2], trans)
+    keypoints_2d[:, :-1] = keypoints_2d[:, :-1] / patch_width - 0.5
+
+    return keypoints_2d, keypoints_3d, smpl_params, has_smpl_params

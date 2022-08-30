@@ -60,8 +60,8 @@ if __name__ == '__main__':
         shot = 0
 
         # tracklet id is detected in this frame
-        if args.tracklet_id in track_frame['tracked_ids']:
-            index = track_frame['tracked_ids'].index(args.tracklet_id)
+        if args.tracklet_id in track_frame['tid']:
+            index = track_frame['tid'].index(args.tracklet_id)
             smpl = track_frame['smpl'][index]
             global_orient = smpl['global_orient']
             body_pose = smpl['body_pose']
@@ -112,7 +112,7 @@ if __name__ == '__main__':
             openpose_file = os.path.join(args.openpose_output, '%s_keypoints.json' % frame_i[:-4])
             json_contents = json.load(open(openpose_file, 'rb'))
 
-            pred_masks = glob.glob(os.path.join(args.phalp_output, '_TMP', '*%s_*' % frame_i[:-4]))
+            pred_masks = glob.glob(os.path.join(args.phalp_output, '_TMP', '%s*%s_*' % (imgname.split('/')[-3], frame_i[:-4])))
             pred_masks.sort()
 
             # computes scores for Hungarian matching
@@ -146,7 +146,7 @@ if __name__ == '__main__':
             scale = 1
             center = [0, 0]
             imgname = os.path.join(args.phalp_demo, 'img', track_frame['img_name'][0])
-            H, W = track_frame['size'][0]['size']
+            H, W = track_frame['size'][0]
             pred_pose_aa = np.zeros(72)
             betas = np.zeros(10)
             cam_trans = np.zeros(3)

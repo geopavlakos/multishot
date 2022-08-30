@@ -67,7 +67,7 @@ class CheckpointSaver(object):
                     stateful_objects[so].load_state_dict(checkpoint[so], strict=False)
                 except TypeError:
                     stateful_objects[so].load_state_dict(checkpoint[so])
-                checkpoint_keys.remove(so)
+                    checkpoint_keys.remove(so)
 
         extra_state = {k: checkpoint[k] for k in checkpoint_keys}
 

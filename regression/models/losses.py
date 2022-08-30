@@ -66,3 +66,27 @@ class BetaRegLoss(nn.Module):
 
     def forward(self, pred_betas, mask):
         return ((mask.view(-1, 1)) * (pred_betas ** 2)).sum() / pred_betas.shape[0]
+
+class SmoothnessLoss(nn.Module):
+
+    def __init__(self):
+        super(SmoothnessLoss, self).__init__()
+        self.loss_fn = nn.MSELoss(reduction='none')
+
+    def forward(self, x, mask):
+        batch_size_temp, seq_len = x.shape[:2]
+        batch_size = batch_size_temp * (seq_len - 1)
+        x_1 = x[:,:-1].contiguous()
+        x_2 = x[:,1:].contiguous()
+        mask = mask.unsqueeze(-1).unsqueeze(-1)
+        mask = mask[:,:-1] * mask[:,1:]
+        if len(x.shape) == 3:
+            x_1 = x_1.view(batch_size, -1)
+            x_2 = x_2.view(batch_size, -1)
+            mask = mask.view(batch_size, -1)
+        elif len(x.shape) == 4:
+            x_1 = x_1.view(batch_size, -1, 3)
+            x_2 = x_2.view(batch_size, -1, 3)
+            mask = mask.view(batch_size, 1, 1)
+        loss = (mask * self.loss_fn(x_1, x_2)).sum() / batch_size
+        return loss

@@ -5,13 +5,24 @@ Code repository for the paper:
 CVPR 2022  
 [[paper](http://arxiv.org/abs/2012.09843)] [[project page](https://geopavlakos.github.io/multishot/)]
 
+![Demo results of our approach](https://geopavlakos.github.io/files/multishot2.gif)
 
 ## Installation instructions
 
-We recommend creating a virtual environment and installing all dependencies:
+We recommend creating a virtual environment:
 ```
 python3.6 -m venv .mshot
 source .mshot/bin/activate
+```
+
+or alternatively a conda environment:
+```
+conda create -n mshot python=3.6
+conda activate mshot
+```
+
+and then installing all dependencies:
+```
 pip install -r requirements.txt
 python setup.py develop
 ```
@@ -25,7 +36,7 @@ python prepare_ava.py --download --extract_midframes
 ```
 This script will download the movies from the [CVDF repository](https://github.com/cvdfoundation/ava-dataset) and extract the relevant frames from the video files.
 
-Moreover, you will need to download some additional data that will be helpful for running the code. You can find them [here](https://drive.google.com/file/d/11_X3N9nj0-PcF5FNUIMt-7VI3ONqVsUf/view?usp=sharing). Please download and unzip the folder.
+Moreover, you will need to download some additional data. This include the pseudo ground truth for AVA, as well as some files that will be helpful for running the code. You can find them [here](https://drive.google.com/file/d/11_X3N9nj0-PcF5FNUIMt-7VI3ONqVsUf/view?usp=sharing). Please download and unzip the folder.
 
 Additionally, you will need to download the SMPL model (the [neutral model](http://smplify.is.tue.mpg.de/) is used in most cases). You cam put this under `mshot_data/models/smpl`. Also, you will need the [GMM prior](http://smplify.is.tue.mpg.de/). You can put the file under `mshot_data/priors`.
 
@@ -62,6 +73,12 @@ python3 optimization/render_fittings.py --config optimization/fit_smpl.yaml \
     --output_folder output/demo
 ```
 
+Alternatively, you can run a demo of the regression models. This again assumes the output from [PHALP](http://people.eecs.berkeley.edu/~jathushan/PHALP/) has already been produced:
+
+```
+python3 regression/demo.py --npz output/demo/phalp.npz \
+    --output_folder output/demo
+```
 
 ## Training code
 
@@ -69,6 +86,12 @@ To train an HMR model with the AVA data, you can run:
 
 ```
 python regression/train.py --name=train_hmr --new_experiment_config=regression/configs/train_hmr.yaml --saved_experiment_dir=experiments_regression
+```
+
+To train a t-HMMR model with the AVA data, you can run:
+
+```
+python regression/train.py --name=train_thmmr --new_experiment_config=regression/configs/train_thmmr.yaml --saved_experiment_dir=experiments_regression
 ```
 
 

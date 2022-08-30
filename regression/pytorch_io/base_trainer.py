@@ -156,8 +156,9 @@ class BaseTrainer(HookManager):
 
         # Reload epoch and step count if a checkpoint was loaded
         if self.checkpoint is not None:
-            self.epoch_count = self.checkpoint['epoch']
-            self._train_state['step_count'] = self.checkpoint['total_step_count']
+            if 'epoch' in self.checkpoint and 'total_step_count' in self.checkpoint:
+                self.epoch_count = self.checkpoint['epoch']
+                self._train_state['step_count'] = self.checkpoint['total_step_count']
 
     def lr_schedulers_setup(self):
         self.lr_schedulers = {k: torch.optim.lr_scheduler.LambdaLR(v, lr_lambda_warmup, last_epoch=self._train_state['step_count']-1)\

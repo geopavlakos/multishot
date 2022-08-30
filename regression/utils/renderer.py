@@ -52,6 +52,19 @@ class Renderer:
         self.camera_center = [self.img_res // 2, self.img_res // 2]
         self.faces = faces
 
+    def visualize(self, vertices, camera_translation, images, focal_length=None, nrow=3, padding=2):
+        images_np = np.transpose(images, (0,2,3,1))
+        rend_imgs = []
+        for i in range(vertices.shape[0]):
+            fl = self.focal_length
+            rend_img = torch.from_numpy(np.transpose(self.__call__(vertices[i], camera_translation[i], images_np[i], focal_length=fl, side_view=False), (2,0,1))).float()
+            rend_img_side = torch.from_numpy(np.transpose(self.__call__(vertices[i], camera_translation[i], images_np[i], focal_length=fl, side_view=True), (2,0,1))).float()
+            rend_imgs.append(torch.from_numpy(images[i]))
+            rend_imgs.append(rend_img)
+            rend_imgs.append(rend_img_side)
+        rend_imgs = make_grid(rend_imgs, nrow=nrow, padding=padding)
+        return rend_imgs
+
     def visualize_tensorboard(self, vertices, camera_translation, images, pred_keypoints, gt_keypoints, focal_length=None, nrow=5, padding=2):
         images_np = np.transpose(images, (0,2,3,1))
         rend_imgs = []

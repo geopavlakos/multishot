@@ -1,0 +1,26 @@
+SMPL:
+  MODEL_PATH: mshot_data/models/smpl
+  GENDER: neutral
+  MODEL_TYPE: smpl
+  NUM_BODY_JOINTS: 23
+  JOINT_REGRESSOR_EXTRA: mshot_data/regression_data/SMPL_to_J19.pkl
+GENERAL:
+  NUM_WORKERS: 12
+  USE_CUDA: TRUE
+TRAIN:
+  BATCH_SIZE: 4
+
+MODEL:
+  HMR_CHECKPOINT: mshot_data/regression_data/hmr_ava.pt
+  THMMR_CHECKPOINT: mshot_data/regression_data/thmmr_ava.pt
+  IMAGE_SIZE: 256
+  SMPL_HEAD:
+      TYPE: basic
+      POOL: pooled
+      SMPL_MEAN_PARAMS: mshot_data/regression_data/smpl_mean_params.npz
+      IN_CHANNELS: 2048
+  BACKBONE:
+    TYPE: resnet
+    NUM_LAYERS: 50
+EXTRA:
+  FOCAL_LENGTH: 5000
